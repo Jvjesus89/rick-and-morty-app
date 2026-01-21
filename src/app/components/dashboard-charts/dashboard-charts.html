@@ -1,1 +1,21 @@
-<p>dashboard-charts works!</p>
+<div class="stats-grid">
+  <div class="stats-card glassefect">
+    <div class="card-header">
+      <lucide-icon name="tv" class="text-green-400"></lucide-icon>
+      <h2 class="stats-title">Episódios por Temporada</h2>
+    </div>
+    <div class="chart-container">
+      <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="'bar'"></canvas>
+    </div>
+  </div>
+
+  <div class="stats-card glassefect">
+    <div class="card-header">
+      <lucide-icon name="globe" class="text-blue-400"></lucide-icon>
+      <h2 class="stats-title">Personagens por Planeta</h2>
+    </div>
+    <div class="chart-container">
+      <canvas baseChart [data]="doughnutChartData" [options]="doughnutChartOptions" [type]="'doughnut'"></canvas>
+    </div>
+  </div>
+</div>
