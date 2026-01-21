@@ -1,0 +1,13 @@
+:root{
+    --primary-color: #5927e4;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,color: black;
+}
+
+.main-container {
+    background-color: var(--primary-color);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 1rem;
+    transform: scale(1);
+    border: 1px solid rgba(253, 244, 244, 0.2);
+}
