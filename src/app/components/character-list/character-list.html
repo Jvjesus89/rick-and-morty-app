@@ -1,4 +1,63 @@
-<div class="main-container">
-    <div class="title">
-        <h1>Rick and Morty</h1>
+<form (ngSubmit)="handleSubmit($event)" class="filter-grid glassefect">
+  <div class="col-span-2">
+    <label class="label-text">Nome do Personagem</label>
+    <div class="input-wrapper">
+      <input
+        type="text"
+        name="localName"
+        [(ngModel)]="localName"
+        placeholder="Buscar por nome..."
+        class="form-input search-padding glassefect"
+      />
+      <lucide-icon name="search" class="icon-search"></lucide-icon>
+    </div>
+  </div>
+
+  <div>
+    <label class="label-text">Status</label>
+    <select name="status" [(ngModel)]="filters.status" (change)="onFilterChange()" class="form-input glassefect">
+      <option value="">Todos</option>
+      <option value="alive">Vivo</option>
+      <option value="dead">Morto</option>
+      <option value="unknown">Desconhecido</option>
+    </select>
+  </div>
+
+  <div>
+    <label class="label-text">Espécie</label>
+    <select name="species" [(ngModel)]="filters.species" (change)="onFilterChange()" class="form-input glassefect">
+      <option value="">Todas</option>
+      <option value="Human">Humano</option>
+      <option value="Alien">Alienígena</option>
+      <option value="Humanoid">Humanoide</option>
+      <option value="Robot">Robô</option>
+      <option value="Cronenberg">Cronenberg</option>
+      <option value="Animal">Animal</option>
+    </select>
+  </div>
+
+  <div>
+    <label class="label-text">Gênero</label>
+    <select name="gender" [(ngModel)]="filters.gender" (change)="onFilterChange()" class="form-input glassefect">
+      <option value="">Todos</option>
+      <option value="male">Masculino</option>
+      <option value="female">Feminino</option>
+      <option value="genderless">Sem Gênero</option>
+      <option value="unknown">Desconhecido</option>
+    </select>
+  </div>
+</form>
+
+<div class="card-container">
+@if (loading) {
+    <div class="character-grid">
+      <div class="skeleton-card" *ngFor="let i of [1,2,3,4]"></div>
+    </div>
+  } @else {
+    <div class="character-grid">
+      @for (char of characters; track char.id) {
+        <app-character-card [character]="char"></app-character-card>
+      }
+    </div>
+  }
 </div>

@@ -1,1 +1,33 @@
-<router-outlet></router-outlet>
+<div>
+  <div class="container">
+    <header class="header">
+      <div class="header-content">
+        <lucide-icon name="tv" class="icon-tv"></lucide-icon>
+        <h1>Rick and Morty</h1>
+      </div>
+      <p>Explorer de Personagens e Estatísticas</p>
+    </header>
+
+    <div class="tabs-container">
+      <button
+        (click)="setActiveTab('characters')"
+        [ngClass]="activeTab === 'characters' ? 'btn-active' : 'btn-inactive'">
+        Personagens
+      </button>
+      
+      <button
+        (click)="setActiveTab('charts')"
+        [ngClass]="activeTab === 'charts' ? 'btn-active' : 'btn-inactive'">
+        Estatísticas
+      </button>
+    </div>
+
+    <div *ngIf="activeTab === 'characters'">
+      <app-character-list></app-character-list>
+    </div>
+    
+    <div *ngIf="activeTab === 'charts'">
+      <app-dashboard-charts></app-dashboard-charts>
+    </div>
+  </div>
+</div>

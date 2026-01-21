@@ -1,12 +1,20 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CharacterList } from './components/character-list/character-list';
+import { DashboardCharts } from './components/dashboard-charts/dashboard-charts';
+import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [CommonModule, CharacterList, DashboardCharts, LucideAngularModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('rick-and-morty-app');
+  activeTab: 'characters' | 'charts' = 'characters';
+
+  setActiveTab(tab: 'characters' | 'charts'): void {
+    this.activeTab = tab;
+  }
 }
