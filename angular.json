@@ -33,7 +33,7 @@
               "src/styles.scss"
             ],
             "server": false,
-            "outputMode": "browser",
+            "outputMode": "static",
             "ssr": false,
             "prerender": false
           },
