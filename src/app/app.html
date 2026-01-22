@@ -1,3 +1,12 @@
+    <!-- loading -->
+    <div *ngIf="isLoading" class="loading-overlay">
+      <lucide-icon name="loader-2" class="spinner"></lucide-icon>
+      <p>Sincronizando Multiverso...</p>
+    </div>
+
+    <div [class.hidden]="isLoading">
+   </div>
+
 <div>
   <div class="container">
     <header class="header">
@@ -25,16 +34,6 @@
     <div *ngIf="activeTab === 'characters'">
       <app-character-list></app-character-list>
     </div>
-    
-    <!-- loading -->
-    <div *ngIf="isLoading" class="loading-overlay">
-      <lucide-icon name="loader-2" class="spinner"></lucide-icon>
-      <p>Sincronizando Multiverso...</p>
-    </div>
-
-    <div [class.hidden]="isLoading">
-   </div>
-
 
     <div *ngIf="activeTab === 'charts'">
       <app-dashboard-charts 
