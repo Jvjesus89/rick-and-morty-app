@@ -2,6 +2,10 @@
   command = "npm run build"
   publish = "dist/rick-and-morty-app/browser"
 
+[build.environment]
+  NETLIFY_SKIP_ANGULAR_RUNTIME = "true"
+  NG_FORCE_STATIC = "true"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

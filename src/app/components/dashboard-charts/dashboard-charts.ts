@@ -38,35 +38,41 @@ export class DashboardCharts implements OnChanges {
   }
 
   private processSeasonData() {
-    const seasonCounts: { [key: string]: Set<string> } = {};
-    
-    this.characters.forEach(char => {
-      char.episode.forEach(epUrl => {
-        // A API retorna a URL, mas geralmente o dado de temporada vem no objeto Episode.
-        // Se estivermos usando apenas o Character, vamos contar aparições totais por temporada
-        // simulando a extração da string do episódio se disponível ou usando a contagem simples.
-      });
+  if (!this.characters.length) return;
+
+  const seasons = { 'T1': 0, 'T2': 0, 'T3': 0, 'T4': 0, 'T5': 0 };
+  this.characters.forEach(char => {
+    char.episode.forEach(url => {
+      const id = parseInt(url.split('/').pop() || '0');
+      if (id <= 11) seasons['T1']++;
+      else if (id <= 21) seasons['T2']++;
+      else if (id <= 31) seasons['T3']++;
+      else if (id <= 41) seasons['T4']++;
+      else if (id <= 51) seasons['T5']++;
     });
-    
-  }
+  });
 
-  private processPlanetData() {
-    const planetCount: { [key: string]: number } = {};
-    
-    this.characters.forEach(char => {
-      const planet = char.origin.name || 'Unknown';
-      planetCount[planet] = (planetCount[planet] || 0) + 1;
-    });
+  this.barChartData = {
+    labels: Object.keys(seasons),
+    datasets: [{ data: Object.values(seasons), label: 'Frequência', backgroundColor: '#4ade80' }]
+  };
+}
 
-    const sortedPlanets = Object.entries(planetCount)
-      .sort((a, b) => b[1] - a[1])
+private processPlanetData() {
+  const planetCounts = this.characters.reduce((acc, char) => {
+    const planet = char.origin.name === 'unknown' ? 'Desconhecido' : char.origin.name;
+    acc[planet] = (acc[planet] || 0) + 1;
+    return acc;
+  }, {} as {[key: string]: number});
 
-    this.doughnutChartData = {
-      labels: sortedPlanets.map(p => p[0]),
-      datasets: [{ 
-        data: sortedPlanets.map(p => p[1]),
-        backgroundColor: ['#22c55e', '#3b82f6', '#ef4444', '#eab308', '#a855f7'] 
-      }]
-    };
+  const sorted = Object.entries(planetCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+  this.doughnutChartData = {
+    labels: sorted.map(p => p[0]),
+    datasets: [{ 
+      data: sorted.map(p => p[1]), 
+      backgroundColor: ['#22c55e', '#3b82f6', '#ef4444', '#eab308', '#a855f7'] 
+    }]
+  };
   }
 }
