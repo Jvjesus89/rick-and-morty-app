@@ -5,6 +5,7 @@ import { DashboardCharts } from './components/dashboard-charts/dashboard-charts'
 import { LucideAngularModule } from 'lucide-angular';
 import { RickMortyService } from './services/rick-morty'; 
 import { Character } from './models/character.model';
+import { Episode } from './models/episode.model';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,10 @@ import { Character } from './models/character.model';
 })
 export class App implements OnInit {
   characters: Character[] = []; 
+  episodes: Episode[] = [];
   activeTab: string = 'characters';
+  isLoading: boolean = false;
+
   constructor(private service: RickMortyService) {}
 
   ngOnInit() {
@@ -27,10 +31,21 @@ export class App implements OnInit {
   }
 
   loadInitialData() {
-     this.service.getCharacters().then(data => {
-      this.characters = data.results; 
-    }).catch(error => {
-      console.error('Erro ao carregar dados:', error);
-    });
+    this.isLoading = true;
+    try {
+     this.service.getAllCharacters().then((data: Character[]) => {
+    this.characters = data;
+   });
+
+    //load episodes
+    this.service.getEpisodes().then((data: Episode[]) => {
+    this.episodes = data; 
+  }).catch(error => {
+    console.error('Erro ao carregar todos os episódios:', error);
+  });
   }
+  finally {
+    this.isLoading = false;
+  }
+ }
 }

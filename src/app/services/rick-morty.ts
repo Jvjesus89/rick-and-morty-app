@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Character } from '../models/character.model';
+import { Episode, EpisodeResponse } from '../models/episode.model';
 
 export interface ApiResponse {
   info: { pages: number; count: number; next: string | null };
@@ -35,4 +36,40 @@ export class RickMortyService {
       return { info: { pages: 0, count: 0, next: null }, results: [] };
     }
   }
+
+  async getEpisodes(): Promise<Episode[]> {
+    let allEpisodes: Episode[] = [];
+    let nextUrl: string | null = 'https://rickandmortyapi.com/api/episode';
+
+  while (nextUrl) {
+     const response: EpisodeResponse = await firstValueFrom(
+      this.http.get<EpisodeResponse>(nextUrl)
+    );
+    
+    allEpisodes = [...allEpisodes, ...response.results];
+    nextUrl = response.info.next;
+  }
+
+  return allEpisodes;
+}
+
+async getAllCharacters(): Promise<Character[]> {
+  let allCharacters: Character[] = [];
+  let nextUrl: string | null = this.apiUrl;
+
+  while (nextUrl) {
+    const response: ApiResponse = await firstValueFrom(
+      this.http.get<ApiResponse>(nextUrl)
+    );
+    
+    allCharacters = [...allCharacters, ...response.results];
+    nextUrl = response.info.next;
+    
+    // OPCIONAL: Para não sobrecarregar o navegador no teste, 
+    // você pode limitar a, por exemplo, 5 páginas inicialmente.
+    // if (allCharacters.length >= 100) break; 
+  }
+
+  return allCharacters;
+}
 }

@@ -5,6 +5,11 @@ import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { Character } from '../../models/character.model';
 import { LucideAngularModule } from 'lucide-angular';
 
+interface Episode {
+  id: number;
+  name: string;
+  episode: string; 
+}
 @Component({
   selector: 'app-dashboard-charts',
   standalone: true,
@@ -14,11 +19,14 @@ import { LucideAngularModule } from 'lucide-angular';
 })
 export class DashboardCharts implements OnChanges {
   @Input() characters: Character[] = [];
-
+  @Input() episodes: Episode[] = [];
   // Chart A: Episodes per Season (Bars)
-  public barChartOptions: ChartConfiguration['options'] = {
+public barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
-    scales: { x: { ticks: { color: 'white' } }, y: { ticks: { color: 'white' } } },
+    scales: { 
+      x: { ticks: { color: 'white' } }, 
+      y: { ticks: { color: 'white' }, beginAtZero: true } 
+    },
     plugins: { legend: { display: false } }
   };
   public barChartData: ChartData<'bar'> = { labels: [], datasets: [{ data: [], backgroundColor: '#4ade80' }] };
@@ -38,23 +46,24 @@ export class DashboardCharts implements OnChanges {
   }
 
   private processSeasonData() {
-  if (!this.characters.length) return;
-
   const seasons = { 'T1': 0, 'T2': 0, 'T3': 0, 'T4': 0, 'T5': 0 };
-  this.characters.forEach(char => {
-    char.episode.forEach(url => {
-      const id = parseInt(url.split('/').pop() || '0');
-      if (id <= 11) seasons['T1']++;
-      else if (id <= 21) seasons['T2']++;
-      else if (id <= 31) seasons['T3']++;
-      else if (id <= 41) seasons['T4']++;
-      else if (id <= 51) seasons['T5']++;
-    });
+
+  this.episodes.forEach(ep => {
+    const seasonNumber = parseInt(ep.episode.substring(1, 3));
+    const key = `T${seasonNumber}`;
+    
+    if (seasons.hasOwnProperty(key)) {
+      seasons[key as keyof typeof seasons]++;
+    }
   });
 
   this.barChartData = {
     labels: Object.keys(seasons),
-    datasets: [{ data: Object.values(seasons), label: 'Frequência', backgroundColor: '#4ade80' }]
+    datasets: [{
+      data: Object.values(seasons),
+      label: 'Quantidade de Episódios',
+      backgroundColor: '#4ade80'
+    }]
   };
 }
 
@@ -62,6 +71,12 @@ public planetChartOptions: ChartConfiguration['options'] = {
   indexAxis: 'y', 
   responsive: true,
   maintainAspectRatio: false, 
+  datasets: {
+    bar: {
+      barPercentage: 3,      
+      categoryPercentage: 0.5
+    }
+  },
   scales: {
     x: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } },
     y: { ticks: { color: 'white' }, grid: { display: false } }
@@ -71,7 +86,12 @@ public planetChartOptions: ChartConfiguration['options'] = {
   }
 };
 
-public planetChartData: ChartData<'bar'> = { labels: [], datasets: [{ data: [], backgroundColor: '#3b82f6' }] };
+public planetChartData: ChartData<'bar'> = { 
+  labels: [], 
+  datasets: [{ 
+    data: [], 
+    backgroundColor: '#3b82f6' 
+  }] };
 
 private processPlanetData() {
   const planetCounts = this.characters.reduce((acc, char) => {

@@ -26,8 +26,21 @@
       <app-character-list></app-character-list>
     </div>
     
+    <!-- loading -->
+    <div *ngIf="isLoading" class="loading-overlay">
+      <lucide-icon name="loader-2" class="spinner"></lucide-icon>
+      <p>Sincronizando Multiverso...</p>
+    </div>
+
+    <div [class.hidden]="isLoading">
+   </div>
+
+
     <div *ngIf="activeTab === 'charts'">
-      <app-dashboard-charts [characters]="characters"></app-dashboard-charts>
+      <app-dashboard-charts 
+      [characters]="characters" 
+      [episodes]="episodes">
+      </app-dashboard-charts>
     </div>
   </div>
 </div>

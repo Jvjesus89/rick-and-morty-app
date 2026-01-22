@@ -38,6 +38,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative; 
+  height: 500px; 
+  overflow-y: auto;
 }
 
 .no-data {
