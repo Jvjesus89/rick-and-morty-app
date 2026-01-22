@@ -9,13 +9,11 @@
     </div>
   </div>
 
-  <div class="stats-card glassefect">
-    <div class="card-header">
-      <lucide-icon name="globe" class="text-blue-400"></lucide-icon>
-      <h2 class="stats-title">Personagens por Planeta</h2>
-    </div>
-    <div class="chart-container">
-      <canvas baseChart [data]="doughnutChartData" [options]="doughnutChartOptions" [type]="'doughnut'"></canvas>
-    </div>
-  </div>
+  <div class="chart-container" style="position: relative; height: 400px; overflow-y: auto;">
+  <canvas baseChart
+    [data]="planetChartData"
+    [options]="planetChartOptions"
+    [type]="'bar'">
+  </canvas>
+</div>
 </div>

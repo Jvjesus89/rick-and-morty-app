@@ -58,6 +58,21 @@ export class DashboardCharts implements OnChanges {
   };
 }
 
+public planetChartOptions: ChartConfiguration['options'] = {
+  indexAxis: 'y', 
+  responsive: true,
+  maintainAspectRatio: false, 
+  scales: {
+    x: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+    y: { ticks: { color: 'white' }, grid: { display: false } }
+  },
+  plugins: {
+    legend: { display: false }
+  }
+};
+
+public planetChartData: ChartData<'bar'> = { labels: [], datasets: [{ data: [], backgroundColor: '#3b82f6' }] };
+
 private processPlanetData() {
   const planetCounts = this.characters.reduce((acc, char) => {
     const planet = char.origin.name === 'unknown' ? 'Desconhecido' : char.origin.name;
@@ -65,14 +80,15 @@ private processPlanetData() {
     return acc;
   }, {} as {[key: string]: number});
 
-  const sorted = Object.entries(planetCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const sorted = Object.entries(planetCounts).sort((a, b) => b[1] - a[1]);
 
-  this.doughnutChartData = {
+  this.planetChartData = {
     labels: sorted.map(p => p[0]),
     datasets: [{ 
       data: sorted.map(p => p[1]), 
-      backgroundColor: ['#22c55e', '#3b82f6', '#ef4444', '#eab308', '#a855f7'] 
+      label: 'Personagens',
+      backgroundColor: '#3b82f6' 
     }]
   };
-  }
+}
 }

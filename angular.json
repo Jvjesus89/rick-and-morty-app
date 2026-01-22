@@ -34,7 +34,7 @@
             ],
             "server": false,
             "outputMode": "static",
-            "ssr": false,
+            "ssr": false
           },
           "configurations": {
             "production": {
