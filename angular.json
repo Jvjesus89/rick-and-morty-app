@@ -32,9 +32,10 @@
             "styles": [
               "src/styles.scss"
             ],
-            "server": null,
+            "server": false,
             "outputMode": "browser",
-            "ssr": false
+            "ssr": false,
+            "prerender": false
           },
           "configurations": {
             "production": {
